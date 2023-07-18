@@ -8,56 +8,31 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Button
+  Button,
 } from 'react-native';
-import React, {} from 'react';
-
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from './src/screens/HomeScreen';
+import DetailScreen from './src/screens/DetailScreen';
+const Stack = createStackNavigator();
 
 const App = () => {
-
-
   return (
-    
-    <View style={styles.container}>
-      <View style={styles.background}>
-        <Text style={styles.text}> ACTİVİTİES</Text>
-        <Text> asdfsa</Text>
-      </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailScreen} /> 
+        
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-      <View style={styles.rowScroll}>
-        <ScrollView horizontal>
-          <View style={styles.square}>
-          
-          </View>
-          <View style={styles.square}></View>
-          <View style={styles.square}></View>
-          <View style={styles.square}></View>
-          <View style={styles.square}></View>
-          <View style={styles.square}></View>
-        </ScrollView>
+export default App;
 
-      </View>
-      <TouchableOpacity>
-        <KeyboardAvoidingView
-          style={styles.plus}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-       
-           <Button title='+' ></Button>
-        </KeyboardAvoidingView>
-      </TouchableOpacity>
-    </View>
-
-
-   
-   );
-  };
-
-  
-  
-  export default App;
-  
-  const styles = StyleSheet.create({
-    backgroundImage: {
+const styles = StyleSheet.create({
+  backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
