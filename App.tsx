@@ -1,39 +1,24 @@
-import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Button,
-} from 'react-native';
-import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './src/screens/HomeScreen';
+import React from 'react';
 import DetailScreen from './src/screens/DetailScreen';
-import {useNavigation} from '@react-navigation/native';
-import CustomStyles from "./src/compenents/CustomStyles";
+import HomeScreen from './src/screens/HomeScreen';
 
+export type StackParams = {
+  DetailScreen: any;
+  aktivity: any;
+};
 
-
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<StackParams>();
 
 function App() {
   return (
-    
-    
-    <NavigationContainer >
+    <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen  name="aktivity" component={HomeScreen} />
-        <Stack.Screen  name="DetailScreen" component={DetailScreen} />
+        <Stack.Screen name="aktivity" component={HomeScreen} />
+        <Stack.Screen name="DetailScreen" component={DetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-       
   );
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { ImageBackground,
+import {
+  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -8,16 +9,18 @@ import { ImageBackground,
   TextInput,
   TouchableOpacity,
   View,
-  Button,} from 'react-native';
-  import { useNavigation } from "@react-navigation/native";
-
-  
+  Button,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {StackParams} from '../../App';
+import CustomStyles from '../compenents/CustomStyles';
 
 const HomeScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   return (
     
-   <View style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.background}>
         <Text style={styles.text}> ACTİVİTİES</Text>
         <Text> hujh</Text>
@@ -37,10 +40,14 @@ const HomeScreen = () => {
         <KeyboardAvoidingView
           style={styles.plus}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-             <Button title="+" onPress={() => navigation.navigate('DetailScreen')} />
+          <Button
+            title="+"
+            onPress={() => navigation.navigate('DetailScreen')}
+          />
         </KeyboardAvoidingView>
       </TouchableOpacity>
     </View>
+   
   );
 };
 
@@ -103,4 +110,3 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
-
