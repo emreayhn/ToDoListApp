@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,34 +6,55 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
-  
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
-
+import ColorView from './ColorView';
 
 const DetailScreen = () => {
-  const changeColorPress = () => {
-    // Burada save işlemi gerçekleştirilecek
+  const [selectedColor, setSelectedColor] = useState('#fff');
+
+  const list = [
+    {
+      color: '#6495ed',
+    },
+    {
+      color: '#ffebcd',
+    },
+    {
+      color: '#deb887',
+    },
+    {
+      color: '#008b8b',
+    },
+    {
+      color: '#ff1493',
+    },
+    {
+      color: '#b22222',
+    },
+  ];
+
+  const changeColorPress = (props: any) => {
     console.log('Save button pressed!');
-  }
+  };
   const littleSquareBackgroundColor = styles.littleSquare.backgroundColor;
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.menu}>
         <Text> Do You Want To Day</Text>
         <TextInput placeholder="list name"></TextInput>
         <View style={styles.menuSquare}>
-        <TouchableOpacity style={[styles.littleSquare, { backgroundColor: 'red' }]} onPress={changeColorPress} />
-          <TouchableOpacity style={styles.littleSquare} />
-          <View style={styles.littleSquare} />
-          <View style={styles.littleSquare} />
-          <View style={styles.littleSquare} />
-          <View style={styles.littleSquare} />
+          {list.map((v, i) => (
+            <TouchableOpacity
+              key={i}
+              style={[styles.littleSquare, {backgroundColor: v.color}]}
+              onPress={() => setSelectedColor(v.color)}
+            />
+          ))}
         </View>
         <TouchableOpacity
-          style={[styles.saveButton, { backgroundColor: littleSquareBackgroundColor }]} >
+          style={[styles.saveButton, {backgroundColor: selectedColor}]}>
           <Text>save</Text>
         </TouchableOpacity>
       </View>
@@ -45,7 +66,7 @@ export default DetailScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#f8f8ff',
 
     flex: 1,
   },

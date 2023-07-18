@@ -36,14 +36,12 @@ const HomeScreen = () => {
           <View style={styles.square}></View>
         </ScrollView>
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('DetailScreen')}>
+        <Text style={styles.plus}>+</Text>
         <KeyboardAvoidingView
           style={styles.plus}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <Button
-            title="+"
-            onPress={() => navigation.navigate('DetailScreen')}
-          />
+        
         </KeyboardAvoidingView>
       </TouchableOpacity>
     </View>
@@ -89,7 +87,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   square: {
-    backgroundColor: 'green',
+    backgroundColor: '#ffd700',
     width: 200,
     height: 120,
     marginTop: 40,
@@ -104,9 +102,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 80,
     borderRadius: 50,
+    paddingLeft:17,
+    paddingTop:5,
+    fontWeight: 'bold',
+    fontSize: 30,
   },
   item: {
     fontWeight: 'bold',
     fontSize: 15,
+    
   },
 });
