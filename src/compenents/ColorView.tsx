@@ -33,3 +33,10 @@ const ColorView: React.FC<ColorProps> = (props) => {
 };
 
 export default ColorView;
+/*
+<Button
+            
+            title="+"
+            onPress={() => navigation.navigate('DetailScreen')}
+          />
+          */

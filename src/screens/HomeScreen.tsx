@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -11,15 +11,15 @@ import {
   View,
   Button,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {StackParams} from '../../App';
 import CustomStyles from '../compenents/CustomStyles';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
+  const route = useRoute();
   return (
-    
     <View style={styles.container}>
       <View style={styles.background}>
         <Text style={styles.text}> ACTİVİTİES</Text>
@@ -28,7 +28,11 @@ const HomeScreen = () => {
 
       <View style={styles.rowScroll}>
         <ScrollView horizontal>
-          <View style={styles.square}></View>
+          <TouchableOpacity style={styles.square}
+          onPress={() => navigation.navigate('ListScreen')}
+          >
+            <Text></Text>
+          </TouchableOpacity>
           <View style={styles.square}></View>
           <View style={styles.square}></View>
           <View style={styles.square}></View>
@@ -40,12 +44,11 @@ const HomeScreen = () => {
         <Text style={styles.plus}>+</Text>
         <KeyboardAvoidingView
           style={styles.plus}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        
-        </KeyboardAvoidingView>
+          behavior={
+            Platform.OS === 'ios' ? 'padding' : 'height'
+          }></KeyboardAvoidingView>
       </TouchableOpacity>
     </View>
-   
   );
 };
 
@@ -102,14 +105,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 80,
     borderRadius: 50,
-    paddingLeft:17,
-    paddingTop:5,
+    paddingLeft: 17,
+    paddingTop: 5,
     fontWeight: 'bold',
     fontSize: 30,
   },
   item: {
     fontWeight: 'bold',
     fontSize: 15,
-    
   },
 });

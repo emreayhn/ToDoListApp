@@ -8,11 +8,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import ColorView from './ColorView';
+import ColorView from '../compenents/ColorView';
+import { JumpingTransition } from 'react-native-reanimated';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {StackParams} from '../../App';
+import HomeScreen from './HomeScreen';
 
 const DetailScreen = () => {
-  const [selectedColor, setSelectedColor] = useState('#fff');
-
+  const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
+  const [selectedColor, setSelectedColor] = useState('orange');
+  const [name, setName] = useState("");
   const list = [
     {
       color: '#6495ed',
@@ -34,16 +39,19 @@ const DetailScreen = () => {
     },
   ];
 
-  const changeColorPress = (props: any) => {
+ /* const changeColorPress = (props: any) => {
     console.log('Save button pressed!');
   };
+  */
   const littleSquareBackgroundColor = styles.littleSquare.backgroundColor;
 
   return (
     <View style={styles.container}>
       <View style={styles.menu}>
         <Text> Do You Want To Day</Text>
-        <TextInput placeholder="list name"></TextInput>
+        <TextInput placeholder="list name" 
+        value={name}
+        onChangeText={setName}></TextInput>
         <View style={styles.menuSquare}>
           {list.map((v, i) => (
             <TouchableOpacity
@@ -54,7 +62,8 @@ const DetailScreen = () => {
           ))}
         </View>
         <TouchableOpacity
-          style={[styles.saveButton, {backgroundColor: selectedColor}]}>
+          style={[styles.saveButton, {backgroundColor: selectedColor}]}
+          onPress={()=>navigation.navigate('aktivity', {name: (name)})}>
           <Text>save</Text>
         </TouchableOpacity>
       </View>
@@ -75,19 +84,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     //  backgroundColor:'pink'
+    
   },
 
   menuSquare: {
     flexDirection: 'row',
     marginBottom: 20,
+ 
   },
 
   littleSquare: {
     backgroundColor: 'pink',
     width: 30,
     height: 30,
-    marginRight: 20,
+    marginRight:20,
     borderRadius: 5,
+    
+    
   },
   saveButton: {
     // backgroundColor:'yellow',
