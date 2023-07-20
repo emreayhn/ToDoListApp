@@ -16,9 +16,11 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {StackParams} from '../../App';
 import CustomStyles from '../compenents/CustomStyles';
 
+
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
-  const route = useRoute();
+  //const route = useRoute();
+  const route: any=useRoute()
   return (
     <View style={styles.container}>
       <View style={styles.background}>
@@ -31,7 +33,7 @@ const HomeScreen = () => {
           <TouchableOpacity style={styles.square}
           onPress={() => navigation.navigate('ListScreen')}
           >
-            <Text></Text>
+            <Text> {route.params.name} </Text>
           </TouchableOpacity>
           <View style={styles.square}></View>
           <View style={styles.square}></View>
