@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -15,12 +15,12 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {StackParams} from '../../App';
 import CustomStyles from '../compenents/CustomStyles';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   //const route = useRoute();
-  const route: any=useRoute()
+  const route: any = useRoute();
   return (
     <View style={styles.container}>
       <View style={styles.background}>
@@ -30,12 +30,15 @@ const HomeScreen = () => {
 
       <View style={styles.rowScroll}>
         <ScrollView horizontal>
-          <TouchableOpacity style={styles.square}
-          onPress={() => navigation.navigate('ListScreen')}
-          >
-            <Text> {route.params.name} </Text>
+          <TouchableOpacity
+            style={styles.square}
+            onPress={() => navigation.navigate('ListScreen')}>
+            <Text>{} </Text>
           </TouchableOpacity>
-          <View style={styles.square}></View>
+          <TouchableOpacity style={styles.square}
+          onPress={()=> navigation.navigate('Example')}>
+            
+          </TouchableOpacity>
           <View style={styles.square}></View>
           <View style={styles.square}></View>
           <View style={styles.square}></View>

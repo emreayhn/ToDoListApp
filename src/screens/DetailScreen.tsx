@@ -13,11 +13,15 @@ import {JumpingTransition} from 'react-native-reanimated';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {StackParams} from '../../App';
 import HomeScreen from './HomeScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   const [selectedColor, setSelectedColor] = useState('orange');
   const [name, setName] = useState<string | number>('');
+  const nameData = async (Name:string) => {
+     
+  }
   const list = [
     {
       color: '#6495ed',
@@ -50,6 +54,7 @@ const DetailScreen = () => {
       <View style={styles.menu}>
         <Text> Do You Want To Day</Text>
         <TextInput
+          style={styles.textInput}
           placeholder="list name"
           value={name.toString()}
           onChangeText={e => {
@@ -91,10 +96,20 @@ const styles = StyleSheet.create({
     flex: 1,
     //  backgroundColor:'pink'
   },
+  textInput: {
+    borderWidth: 1, 
+    borderColor: 'pink',
+    width:'75%',
+    height:40,
+    marginVertical:'2%',
+    borderRadius:8
+
+  },
 
   menuSquare: {
     flexDirection: 'row',
     marginBottom: 20,
+    width:'72%',
   },
 
   littleSquare: {
@@ -106,11 +121,11 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     // backgroundColor:'yellow',
-    width: 285,
+    width:'75%',
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 15,
+    
     borderRadius: 15,
   },
 

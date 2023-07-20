@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         marginLeft:80
     },
     keybord:{
-     //   backgroundColor:'pink',
+    //    backgroundColor:'pink',
       
         width:'100%',
         height:'40%',
@@ -75,14 +75,14 @@ const styles = StyleSheet.create({
     textInput: {
         backgroundColor:'white',
         width:'82%',
-        height:'18%',
+        height:50,
         borderRadius:10,
         paddingLeft:20,
     },
     plus: {
         backgroundColor:'pink',
         width:'15%',
-        height:'18%',
+        height:50,
         alignItems: 'center',
         justifyContent:'center',
         borderRadius:10
