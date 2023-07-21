@@ -18,10 +18,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const DetailScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   const [selectedColor, setSelectedColor] = useState('orange');
-  const [name, setName] = useState<string | number>('');
-  const nameData = async (Name:string) => {
-     
+  const [name, setName] = useState<string>('');
+  const nameData = async (key:string, Name:string) => {
+     try {
+      await AsyncStorage.setItem('@name', JSON.stringify(name))
+     } catch (error) {
+     }
+     console.log(name)
   }
+
+  
   const list = [
     {
       color: '#6495ed',
@@ -56,10 +62,10 @@ const DetailScreen = () => {
         <TextInput
           style={styles.textInput}
           placeholder="list name"
-          value={name.toString()}
-          onChangeText={e => {
-            setName(Number(e));
-          }}></TextInput>
+          value={name}
+            onChangeText={e => {
+              setName(e);
+            }}></TextInput>
         <View style={styles.menuSquare}>
           {list.map((v, i) => (
             <TouchableOpacity
@@ -74,7 +80,10 @@ const DetailScreen = () => {
         </View>
         <TouchableOpacity
           style={[styles.saveButton, {backgroundColor: selectedColor}]}
-          onPress={() => navigation.navigate('aktivity', {name: name})}>
+          onPress={() => {
+            nameData('@name', name);
+            navigation.navigate('aktivity', {name: name})
+          } }>
           <Text>save</Text>
         </TouchableOpacity >
       </View>

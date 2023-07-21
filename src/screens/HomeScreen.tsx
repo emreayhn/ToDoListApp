@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
   Button,
+  Alert,
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -20,7 +21,29 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   //const route = useRoute();
-  const route: any = useRoute();
+  // const route: any = useRoute();
+  const [listName, setlistName] = useState<string>();
+  
+  useEffect(() => {
+    visibleData();
+  }, []);
+  const visibleData = async () => {
+    try {
+      const saveListName = await AsyncStorage.getItem('@name');
+      if (saveListName !== null) {
+        setlistName(JSON.parse(saveListName));
+      }
+    } catch (error) {}
+  };
+  const removeData = async (key: string) => {
+    try {
+      await AsyncStorage.removeItem(key);
+      console.log('Veri başarıyla silindi.');
+      
+    } catch (error) {
+      console.log('Veri silinirken hata oluştu:', error);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.background}>
@@ -32,12 +55,20 @@ const HomeScreen = () => {
         <ScrollView horizontal>
           <TouchableOpacity
             style={styles.square}
-            onPress={() => navigation.navigate('ListScreen')}>
-            <Text>{} </Text>
+            onPress={() => navigation.navigate('ListScreen')}
+            onLongPress={()=> Alert.alert("Warning", "Which One Do You Want to Delete",
+            [
+             {text:"DELETE DATA", onPress:()=> removeData},
+             {text:"DELETE AKTİVİTY",}
+            ] 
+            )}
+           >
+            <Text>{listName} </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.square}
-          onPress={()=> navigation.navigate('Example')}>
-            
+          <TouchableOpacity
+            style={styles.square}
+            onPress={() => navigation.navigate('Example')}>
+            <Text> </Text>
           </TouchableOpacity>
           <View style={styles.square}></View>
           <View style={styles.square}></View>

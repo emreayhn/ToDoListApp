@@ -17,23 +17,25 @@ function Example() {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
 
   const [userName, setuserName] = useState<string>('');
-  const storeData = async (userName: string) => {
+  const storeData = async (key: string ,userName: string) => {
     try {
-      await AsyncStorage.setItem('my-key', userName);
+      await AsyncStorage.setItem('my-key', JSON.stringify(userName),);
     } catch (e) {
       
     }
     console.log(userName)
   };
   const [password, setPassword] = useState<string>("")
-  const storeDataPassword = async (password: string) => {
+  const storeDataPassword = async (key: string ,password: string) => {
     try {
-      await AsyncStorage.setItem('my-key2', password);
+      await AsyncStorage.setItem('my-key2', JSON.stringify(password));
     } catch (e) {
       
     }
     console.log(password)
   };
+
+  
 
   return (
     <View style={styles.layout}>
@@ -59,9 +61,9 @@ function Example() {
         <TouchableOpacity style={styles.button}
         
         onPress={()=>{
-            storeData(userName);
-            storeDataPassword(password)
-            navigation.navigate('aktivity',{userName})
+            storeData('my-key',userName);
+            storeDataPassword('my-key' , password)
+            navigation.navigate('aktivity',{userName,password})
         }}>
             
           <Text style={styles.buttonText}>Login</Text>
