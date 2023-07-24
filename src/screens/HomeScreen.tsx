@@ -22,8 +22,8 @@ const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   //const route = useRoute();
   // const route: any = useRoute();
-  const [listName, setlistName] = useState<string>();
-  
+  const [listName, setlistName] = useState<string | null>();
+  const [listData, setListData] = useState([]);
   useEffect(() => {
     visibleData();
   }, []);
@@ -32,6 +32,8 @@ const HomeScreen = () => {
       const saveListName = await AsyncStorage.getItem('@name');
       if (saveListName !== null) {
         setlistName(JSON.parse(saveListName));
+      } else {
+        setlistName(null);
       }
     } catch (error) {}
   };
@@ -39,7 +41,7 @@ const HomeScreen = () => {
     try {
       await AsyncStorage.removeItem(key);
       console.log('Veri başarıyla silindi.');
-      
+      visibleData();
     } catch (error) {
       console.log('Veri silinirken hata oluştu:', error);
     }
@@ -56,13 +58,12 @@ const HomeScreen = () => {
           <TouchableOpacity
             style={styles.square}
             onPress={() => navigation.navigate('ListScreen')}
-            onLongPress={()=> Alert.alert("Warning", "Which One Do You Want to Delete",
-            [
-             {text:"DELETE DATA", onPress:()=> removeData},
-             {text:"DELETE AKTİVİTY",}
-            ] 
-            )}
-           >
+            onLongPress={() =>
+              Alert.alert('Warning', 'Which One Do You Want to Delete', [
+                {text: 'DELETE DATA', onPress: () => removeData('@name')},
+                {text: 'DELETE AKTİVİTY'},
+              ])
+            }>
             <Text>{listName} </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -76,7 +77,10 @@ const HomeScreen = () => {
           <View style={styles.square}></View>
         </ScrollView>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('DetailScreen')}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('DetailScreen', {visibleData: visibleData})
+        }>
         <Text style={styles.plus}>+</Text>
         <KeyboardAvoidingView
           style={styles.plus}

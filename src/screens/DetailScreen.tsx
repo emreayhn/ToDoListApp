@@ -7,7 +7,7 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import ColorView from '../compenents/ColorView';
 import {JumpingTransition} from 'react-native-reanimated';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -15,19 +15,22 @@ import {StackParams} from '../../App';
 import HomeScreen from './HomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DetailScreen = () => {
+const DetailScreen = ({route}: {route: any}) => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
+
   const [selectedColor, setSelectedColor] = useState('orange');
   const [name, setName] = useState<string>('');
-  const nameData = async (key:string, Name:string) => {
-     try {
-      await AsyncStorage.setItem('@name', JSON.stringify(name))
-     } catch (error) {
-     }
-     console.log(name)
-  }
+  const nameData = async () => {
+    try {
+      await AsyncStorage.setItem('@name', JSON.stringify(name));
+      await AsyncStorage.setItem('@selectedColor', selectedColor);
+      navigation.navigate('aktivity');
+      route.params.visibleData();
+    } catch (error) {}
+    console.log(name);
+  };
 
-  
+
   const list = [
     {
       color: '#6495ed',
@@ -63,9 +66,9 @@ const DetailScreen = () => {
           style={styles.textInput}
           placeholder="list name"
           value={name}
-            onChangeText={e => {
-              setName(e);
-            }}></TextInput>
+          onChangeText={e => {
+            setName(e);
+          }}></TextInput>
         <View style={styles.menuSquare}>
           {list.map((v, i) => (
             <TouchableOpacity
@@ -73,7 +76,6 @@ const DetailScreen = () => {
               style={[styles.littleSquare, {backgroundColor: v.color}]}
               onPress={() => {
                 setSelectedColor(v.color);
-                
               }}
             />
           ))}
@@ -81,11 +83,10 @@ const DetailScreen = () => {
         <TouchableOpacity
           style={[styles.saveButton, {backgroundColor: selectedColor}]}
           onPress={() => {
-            nameData('@name', name);
-            navigation.navigate('aktivity', {name: name})
-          } }>
+            nameData();
+          }}>
           <Text>save</Text>
-        </TouchableOpacity >
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -106,19 +107,18 @@ const styles = StyleSheet.create({
     //  backgroundColor:'pink'
   },
   textInput: {
-    borderWidth: 1, 
+    borderWidth: 1,
     borderColor: 'pink',
-    width:'75%',
-    height:40,
-    marginVertical:'2%',
-    borderRadius:8
-
+    width: '75%',
+    height: 40,
+    marginVertical: '2%',
+    borderRadius: 8,
   },
 
   menuSquare: {
     flexDirection: 'row',
     marginBottom: 20,
-    width:'72%',
+    width: '72%',
   },
 
   littleSquare: {
@@ -130,11 +130,11 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     // backgroundColor:'yellow',
-    width:'75%',
+    width: '75%',
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    
+
     borderRadius: 15,
   },
 

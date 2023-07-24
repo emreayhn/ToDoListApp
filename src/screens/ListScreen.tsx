@@ -38,15 +38,7 @@ const ListScreen = () => {
   }, []);
 
   
-  const list2 = [
-    {
-      width: '5%',
-      height: '5%',
-      backgroundColor: 'yellow',
-      borderRadius: 5,
-    },
-  ];
-
+ 
   return (
     <View style={styles.container}>
       <View style={styles.div}>

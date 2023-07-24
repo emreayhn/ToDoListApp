@@ -1,16 +1,15 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useState} from 'react';
 import DetailScreen from './src/screens/DetailScreen';
 import HomeScreen from './src/screens/HomeScreen';
-import ListScreen from "./src/screens/ListScreen";
-import Example from "./src/screens/Example";
-
+import ListScreen from './src/screens/ListScreen';
+import Example from './src/screens/Example';
 
 export type StackParams = {
   DetailScreen: any;
   aktivity: any;
-  ListScreen : any;
+  ListScreen: any;
   Example: any;
 };
 
