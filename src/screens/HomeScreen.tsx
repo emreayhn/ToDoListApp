@@ -62,7 +62,7 @@ const HomeScreen = () => {
               Alert.alert('Warning', 'Which One Do You Want to Delete', [
                 {text: 'DELETE DATA', onPress: () => removeData('@name')},
                 {text: 'DELETE AKTİVİTY'},
-                {text: 'EXIT'}
+                {text: 'EXIT'},
               ])
             }>
             <Text>{listName} </Text>

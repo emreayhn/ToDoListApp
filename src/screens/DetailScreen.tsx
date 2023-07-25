@@ -30,7 +30,6 @@ const DetailScreen = ({route}: {route: any}) => {
     console.log(name);
   };
 
-
   const list = [
     {
       color: '#6495ed',

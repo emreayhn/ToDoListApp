@@ -8,64 +8,91 @@ import {
   TouchableOpacity,
   ScrollView,
   Keyboard,
+  Animated,
+  PanResponder,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListScreen = () => {
-  const [task, setTask] = useState<string>("");
+  const [listName, setlistName] = useState<string | null>();
+  const [task, setTask] = useState<string>('');
+  const [todoList, setTodoList] = useState<string[]>([]);
+
+  useEffect(() => {
+    visibleData();
+    getData();
+  }, []);
+
+
+  const visibleData = async () => {
+    try {
+      const saveListName = await AsyncStorage.getItem('@name');
+      if (saveListName !== null) {
+        setlistName(JSON.parse(saveListName));
+      } else {
+        setlistName(null);
+      }
+    } catch (error) {}
+  };
+
+  const addTodo = async () => {
+    await taskData(task);
+    setTodoList(taskList => [...taskList, task]);
+    setTask('');
+  };
+
   
-  
-
- const TaskView = () => {
-  return (
-    <View style={styles.task}>
-      <TouchableOpacity style={styles.square}></TouchableOpacity>
-      <Text style={styles.taskText}>{task}</Text>
-    </View>
-  );
-};
-
-let initTodoList = [
- 
-]
-const [todoList, setTodoList] = useState<string[]>([]);
-
-
   const taskData = async (task: string) => {
     try {
-      await AsyncStorage.setItem('my-key', task);
+      await AsyncStorage.setItem('@task', JSON.stringify([...todoList, task]));
     } catch (e) {}
     console.log(task);
   };
 
 
-
-  const addTodo = () => {
-    if (task) {
-      setTodoList(prevList => [...prevList, task]);
-      setTask(""); // Ekledikten sonra inputu temizleme
-    }
+  const removeTask = async (index: number) => {
+    setTodoList(prevList => {
+      const newList = [...prevList];
+      const removedTask = newList.splice(index, 1)[0];
+      AsyncStorage.setItem('@task', JSON.stringify(newList)) // AsyncStorage'den silinen veriyi de kaldırın
+        .catch(error => {
+          console.error('Hata oluştu:', error);
+        });
+      return newList;
+    });
   };
   
- 
+
+  const getData = async () => {
+    try {
+      const saveTaskName = await AsyncStorage.getItem('@task');
+      if (saveTaskName !== null) {
+        setTodoList(JSON.parse(saveTaskName));
+      } else {
+        setTodoList([]);
+      }
+    } catch (error) {}
+  };
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.div}>
         <Text style={styles.text}>What Will I Do</Text>
-        <Text></Text>
+        <Text style={styles.listNameText}>{listName}</Text>
         <View style={styles.line}></View>
-        
-        {todoList.map((task) =>
-          <View style={styles.task}>
-          <TouchableOpacity style={styles.square}
-          ></TouchableOpacity>
-          <Text style={styles.taskText}>{task}
-          </Text>
-        </View>)}
-        
-       
+
+        {todoList.map((task, index) => (
+          <View key={index} style={styles.task}>
+            <TouchableOpacity
+              style={styles.square}
+              onPress={() => removeTask(index)}></TouchableOpacity>
+            <Text style={styles.taskText}>{task}</Text>
+          </View>
+        ))}
       </View>
 
       <KeyboardAvoidingView
@@ -79,8 +106,7 @@ const [todoList, setTodoList] = useState<string[]>([]);
         <TouchableOpacity
           style={styles.plus}
           onPress={() => {
-            taskData(task);
-          addTodo()
+            addTodo();
           }}>
           <Text>+</Text>
         </TouchableOpacity>
@@ -101,28 +127,31 @@ const styles = StyleSheet.create({
     height: '40%',
   },
   task: {
- //   backgroundColor: 'cyan',
+    //   backgroundColor: 'cyan',
     width: '100%',
     height: 80,
     flexDirection: 'row',
     paddingLeft: '10%',
-    alignItems:'center'
+    alignItems: 'center',
   },
   square: {
     width: '5%',
     height: '28%',
     //backgroundColor: 'yellow',
     borderRadius: 5,
-    borderWidth:1,
-    borderColor:'black',
+    borderWidth: 1,
+    borderColor: 'black',
   },
   taskText: {
-    marginLeft:10
-
+    marginLeft: 10,
   },
   text: {
     fontSize: 30,
     marginLeft: 80,
+  },
+  listNameText: {
+    marginLeft: 80,
+    fontSize: 20,
   },
   line: {
     backgroundColor: 'purple',
@@ -132,7 +161,7 @@ const styles = StyleSheet.create({
     marginLeft: 80,
   },
   keybord: {
-    //    backgroundColor:'pink',
+    //   backgroundColor:'pink',
 
     width: '100%',
     height: '40%',
