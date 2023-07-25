@@ -14,7 +14,8 @@ import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListScreen = () => {
-  const [task, setTask] = useState<string>('');
+  const [task, setTask] = useState<string>("");
+  
   
 
  const TaskView = () => {
@@ -25,7 +26,13 @@ const ListScreen = () => {
     </View>
   );
 };
- const  [dizi, setDizi] = useState([])
+
+let initTodoList = [
+ 
+]
+const [todoList, setTodoList] = useState<string[]>([]);
+
+
   const taskData = async (task: string) => {
     try {
       await AsyncStorage.setItem('my-key', task);
@@ -33,10 +40,14 @@ const ListScreen = () => {
     console.log(task);
   };
 
-  useEffect(() => {
-    taskData(task);
-  }, []);
 
+
+  const addTodo = () => {
+    if (task) {
+      setTodoList(prevList => [...prevList, task]);
+      setTask(""); // Ekledikten sonra inputu temizleme
+    }
+  };
   
  
   return (
@@ -45,11 +56,16 @@ const ListScreen = () => {
         <Text style={styles.text}>What Will I Do</Text>
         <Text></Text>
         <View style={styles.line}></View>
-       {dizi.map((key,value)=>{
-        return(
-          (<TaskView></TaskView>)
-        )
-       })}
+        
+        {todoList.map((task) =>
+          <View style={styles.task}>
+          <TouchableOpacity style={styles.square}
+          ></TouchableOpacity>
+          <Text style={styles.taskText}>{task}
+          </Text>
+        </View>)}
+        
+       
       </View>
 
       <KeyboardAvoidingView
@@ -64,7 +80,7 @@ const ListScreen = () => {
           style={styles.plus}
           onPress={() => {
             taskData(task);
-            <TaskView></TaskView>
+          addTodo()
           }}>
           <Text>+</Text>
         </TouchableOpacity>
