@@ -84,7 +84,6 @@ const ListScreen = () => {
         <Text style={styles.text}>What Will I Do</Text>
         <Text style={styles.listNameText}>{listName}</Text>
         <View style={styles.line}></View>
-
         {todoList.map((task, index) => (
           <View key={index} style={styles.task}>
             <TouchableOpacity
@@ -148,10 +147,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     marginLeft: 80,
+    color:'gray'
   },
   listNameText: {
     marginLeft: 80,
     fontSize: 20,
+    color:'black', 
+    
   },
   line: {
     backgroundColor: 'purple',
