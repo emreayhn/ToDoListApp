@@ -18,21 +18,27 @@ import {StackParams} from '../../App';
 import CustomStyles from '../compenents/CustomStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const HomeScreen = () => {
+const HomeScreen = ({route}: {route: any}) => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   //const route = useRoute();
   // const route: any = useRoute();
   const [listName, setlistName] = useState<string | null>();
   const [listArry, setListArray] = useState<string[]>([]);
   const [list, setList] = useState<any>()
+  const [color, setColor] =useState<any>()
+  const [selectedColor, setSelectedColor] = useState('default');
 
   useEffect(() => {
     visibleData();
-  }, []);
+    if (route.params && route.params.selectedColor) {
+      setSelectedColor(route.params.selectedColor);
+    }
+  }, [route.params]);
 
   const visibleData = async () => {
     try {
       const saveListName = await AsyncStorage.getItem('@name');
+  
       if (saveListName !== null) {
         setlistName(JSON.parse(saveListName));
       } else {
@@ -53,13 +59,17 @@ const HomeScreen = () => {
   const addTodo = async () => {
     await visibleData();
     setListArray(taskList => [...taskList, list]);
-    
+    setlistName("")
   };
 
-  const removeAktivity =  (index: number) => {
+  const removeAktivity = async (index: number) => {
     setListArray(prevList => {
       const newList = [...prevList];
       const removedTask = newList.splice(index, 1)[0];
+      AsyncStorage.setItem('@name', JSON.stringify(newList)) 
+      .catch(error => {
+        console.error('Hata oluştu:', error);
+      });
       return newList;
     });
   };
@@ -73,30 +83,24 @@ const HomeScreen = () => {
 
       <View style={styles.rowScroll}>
         <ScrollView horizontal>
-          <TouchableOpacity
-            style={styles.square}
-            onPress={() => navigation.navigate('ListScreen')}
-            onLongPress={() =>
-              Alert.alert('Warning', 'Which One Do You Want to Delete', [
-                {text: 'DELETE DATA', onPress: () => removeData('@name')},
-                {text: 'DELETE AKTİVİTY'}, 
-                {text: 'EXIT'},
-              ])
-            }>
-            <Text style={styles.squareText}>{listName} </Text>
-          </TouchableOpacity >
-          {listArry.map((list, index) =>(
-            <TouchableOpacity
-            style={styles.square}
-            onPress={() => addTodo()}
-            onLongPress={()=>Alert.alert("s","ad",[
-              {text:'delete', onPress:()=> removeAktivity(index)}
-            ])}>
-              
-            <Text> </Text>
-          </TouchableOpacity>
-
+          {listArry.map((list, index)=>(
+             <TouchableOpacity
+             style={[styles.square , { backgroundColor: selectedColor }]}
+             onPress={() => navigation.navigate('ListScreen',)}
+             onLongPress={() =>
+               Alert.alert('Warning', 'Which One Do You Want to Delete', [
+                 {text: 'DELETE DATA', onPress: () => removeData('@name')},
+                 {text: 'DELETE AKTİVİTY',onPress:()=> removeAktivity(index)}, 
+                 {text: 'EXIT'},
+               ])
+               
+             }>
+             <Text style={styles.squareText}>{listName} </Text>
+             
+           </TouchableOpacity >
           ))}
+         
+  
           
           
         </ScrollView>
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 28,
-    color: 'black',
+    color: '#191970',
     justifyContent: 'center',
     alignItems: 'center',
   },

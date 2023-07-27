@@ -19,12 +19,63 @@ const ListScreen = () => {
   const [listName, setlistName] = useState<string | null>();
   const [task, setTask] = useState<string>('');
   const [todoList, setTodoList] = useState<string[]>([]);
-
+/*
+  const [objec, setObjec] = useState<any>([
+    {
+      id: 0,
+      brand: 'fiat',
+      model: 2012,
+      adres: {
+        province: 'denizli',
+        neighborhood: 'selçuk',
+      },
+    },
+    {
+      id: 1,
+      brand: 'fiat',
+      model: 2012,
+      adres: {
+        province: 'denizli',
+        neighborhood: 'selçuk',
+      },
+    },
+    {
+      id: 2,
+      brand: 'fiat',
+      model: 2012,
+      adres: {
+        province: 'denizli',
+        neighborhood: 'selçuk',
+      },
+    },
+    {
+      id: 3,
+      brand: 'fiat',
+      model: 2012,
+      adres: {
+        province: 'denizli',
+        neighborhood: 'selçuk',
+      },
+    },
+  ]);
+  setObjec([
+    ...objec,
+    objec[objec.findIndex((v: any) => v.id === 2)],
+    {
+      id: 3,
+      brand: 'fiat',
+      model: 2012,
+      adres: {
+        province: 'denizli',
+        neighborhood: 'selçuk',
+      },
+    },
+  ]);
+*/
   useEffect(() => {
     visibleData();
     getData();
   }, []);
-
 
   const visibleData = async () => {
     try {
@@ -43,7 +94,6 @@ const ListScreen = () => {
     setTask('');
   };
 
-  
   const taskData = async (task: string) => {
     try {
       await AsyncStorage.setItem('@task', JSON.stringify([...todoList, task]));
@@ -51,19 +101,16 @@ const ListScreen = () => {
     console.log(task);
   };
 
-
   const removeTask = async (index: number) => {
     setTodoList(prevList => {
       const newList = [...prevList];
       const removedTask = newList.splice(index, 1)[0];
-      AsyncStorage.setItem('@task', JSON.stringify(newList)) // AsyncStorage'den silinen veriyi de kaldırın
-        .catch(error => {
-          console.error('Hata oluştu:', error);
-        });
+      AsyncStorage.setItem('@task', JSON.stringify(newList)).catch(error => {
+        console.error('Hata oluştu:', error);
+      });
       return newList;
     });
   };
-  
 
   const getData = async () => {
     try {
@@ -75,8 +122,6 @@ const ListScreen = () => {
       }
     } catch (error) {}
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -119,6 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8f8ff',
     // justifyContent:'space-between'
+    //borderTopWidth:10
   },
   div: {
     //    backgroundColor:'cyan',
@@ -139,21 +185,21 @@ const styles = StyleSheet.create({
     //backgroundColor: 'yellow',
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: '191970',
   },
   taskText: {
     marginLeft: 10,
+    color:'black'
   },
   text: {
     fontSize: 30,
     marginLeft: 80,
-    color:'gray'
+    color: 'gray',
   },
   listNameText: {
     marginLeft: 80,
     fontSize: 20,
-    color:'black', 
-    
+    color: 'black',
   },
   line: {
     backgroundColor: 'purple',

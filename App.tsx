@@ -20,7 +20,14 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="aktivity" component={HomeScreen} />
-        <Stack.Screen name="DetailScreen" component={DetailScreen} />
+        <Stack.Screen
+          name="DetailScreen"
+          component={DetailScreen}
+          options={{
+            title: '',
+            headerTintColor:'#008b8b'
+          }}
+        />
         <Stack.Screen name="ListScreen" component={ListScreen} />
         <Stack.Screen name="Example" component={Example} />
       </Stack.Navigator>

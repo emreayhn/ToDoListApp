@@ -20,12 +20,16 @@ const DetailScreen = ({route}: {route: any}) => {
 
   const [selectedColor, setSelectedColor] = useState('orange');
   const [name, setName] = useState<string>('');
+  const { onColorChange, onTextChange } = route.params || { onColorChange: null, onTextChange: null };
+  
   const nameData = async () => {
     try {
       await AsyncStorage.setItem('@name', JSON.stringify(name));
-      await AsyncStorage.setItem('@selectedColor', selectedColor);
-      navigation.navigate('aktivity');
+      await AsyncStorage.setItem('@selectedColor', JSON.stringify(selectedColor));
+      navigation.navigate('aktivity',{selectedColor});
       route.params.visibleData();
+      onTextChange(name)
+     
     } catch (error) {}
     console.log(name);
   };
@@ -83,6 +87,7 @@ const DetailScreen = ({route}: {route: any}) => {
           style={[styles.saveButton, {backgroundColor: selectedColor}]}
           onPress={() => {
             nameData();
+            
           }}>
           <Text>save</Text>
         </TouchableOpacity>
